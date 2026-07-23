@@ -1,4 +1,4 @@
-package com.orderflow.auth.entity;
+package com.orderflow.auth.domain.entity;
 
 import com.orderflow.auth.enums.UserStatus;
 

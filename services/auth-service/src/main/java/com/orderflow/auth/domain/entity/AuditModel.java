@@ -1,4 +1,4 @@
-package com.orderflow.auth.entity;
+package com.orderflow.auth.domain.entity;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
