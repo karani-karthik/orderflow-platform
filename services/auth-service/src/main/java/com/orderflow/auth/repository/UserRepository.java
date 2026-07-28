@@ -6,4 +6,6 @@ import com.orderflow.auth.domain.entity.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
+	boolean existsByEmail(String email);
+
 }

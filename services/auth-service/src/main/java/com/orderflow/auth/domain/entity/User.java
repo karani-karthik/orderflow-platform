@@ -1,11 +1,19 @@
 package com.orderflow.auth.domain.entity;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import com.orderflow.auth.enums.UserStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,12 +22,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@MappedSuperclass
+@Table(name = "users")
 public class User extends AuditModel {
 
 	@Column(unique = true, nullable = false)
@@ -28,14 +37,8 @@ public class User extends AuditModel {
 	@Column(name = "password_hash", nullable = false)
 	private String passwordHash;
 
-	@Column(name = "first_name", length = 120)
-	private String firstName;
-
-	@Column(name = "last_name", length = 120)
-	private String lastName;
-
-	@Column(name = "nick_name", length = 120)
-	private String nickName;
+	@Column(name = "full_name", length = 120)
+	private String fullName;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
@@ -46,4 +49,8 @@ public class User extends AuditModel {
 	@Builder.Default
 	private Boolean emailVerified = false;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@Builder.Default
+	private Set<Role> roles = new HashSet<>();
 }
