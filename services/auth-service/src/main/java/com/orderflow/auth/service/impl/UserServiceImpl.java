@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.orderflow.auth.config.exception.EmailAlreadyExistsException;
 import com.orderflow.auth.domain.dto.request.UserRequest;
 import com.orderflow.auth.domain.dto.response.UserResponse;
 import com.orderflow.auth.domain.entity.Role;
 import com.orderflow.auth.domain.entity.User;
 import com.orderflow.auth.enums.UserStatus;
+import com.orderflow.auth.exception.EmailAlreadyExistsException;
 import com.orderflow.auth.repository.RoleRepository;
 import com.orderflow.auth.repository.UserRepository;
 import com.orderflow.auth.service.UserService;
@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 
+	@Override
 	public UserResponse createUser(UserRequest request) {
 		if (userRepository.existsByEmail(request.email())) {
 			throw new EmailAlreadyExistsException();
@@ -44,7 +45,13 @@ public class UserServiceImpl implements UserService {
 				.build();
 
 		userRepository.save(user);
-		
+		return mapToResponseDTO(user);
+	}
+
+	@Override
+	public UserResponse getUser(String id) {
+		User user = userRepository.findById(id).orElseThrow();
+
 		return mapToResponseDTO(user);
 	}
 

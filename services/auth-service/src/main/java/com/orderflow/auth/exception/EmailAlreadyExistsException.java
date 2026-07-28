@@ -1,4 +1,4 @@
-package com.orderflow.auth.config.exception;
+package com.orderflow.auth.exception;
 
 public class EmailAlreadyExistsException extends RuntimeException{
 
