@@ -12,6 +12,8 @@ import com.orderflow.auth.domain.entity.Role;
 import com.orderflow.auth.domain.entity.User;
 import com.orderflow.auth.enums.UserStatus;
 import com.orderflow.auth.exception.EmailAlreadyExistsException;
+import com.orderflow.auth.exception.RoleNotFoundException;
+import com.orderflow.auth.exception.UserNotFoundException;
 import com.orderflow.auth.repository.RoleRepository;
 import com.orderflow.auth.repository.UserRepository;
 import com.orderflow.auth.service.UserService;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		Role customerRole = roleRepository.findByName("CUSTOMER")
-				.orElseThrow(() -> new IllegalStateException("CUSTOMER role not seeded"));
+				.orElseThrow(() -> new RoleNotFoundException("CUSTOMER"));
 
 		User user = User.builder()
 				.fullName(request.fullName())
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponse getUser(String id) {
-		User user = userRepository.findById(id).orElseThrow();
+		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
 		return mapToResponseDTO(user);
 	}

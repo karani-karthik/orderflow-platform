@@ -46,4 +46,27 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(response);
 	}
 
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
+		String localizedMessage = messageHelper.getMessage("error.user.not.found");
+		ApiResponse<Void> response = ApiResponse.error(localizedMessage, HttpStatus.NOT_FOUND, request.getRequestURI(),
+				null);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+
+	@ExceptionHandler(RoleNotFoundException.class)
+	public ResponseEntity<ApiResponse<Void>> handleRoleNotFound(RoleNotFoundException ex, HttpServletRequest request) {
+		String localizedMessage = messageHelper.getMessage("error.role.not.found");
+		ApiResponse<Void> response = ApiResponse.error(localizedMessage, HttpStatus.INTERNAL_SERVER_ERROR,
+				request.getRequestURI(), null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ApiResponse<Void>> handleGeneric(Exception ex, HttpServletRequest request) {
+		String localizedMessage = messageHelper.getMessage("error.generic");
+		ApiResponse<Void> response = ApiResponse.error(localizedMessage, HttpStatus.INTERNAL_SERVER_ERROR,
+				request.getRequestURI(), null);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	}
 }
