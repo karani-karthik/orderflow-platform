@@ -32,5 +32,4 @@ public class OrderItem extends BaseModel {
 
 	@Column(name = "unit_price", nullable = false, precision = 12, scale = 2)
 	private BigDecimal unitPrice;
-	
 }
