@@ -1,6 +1,7 @@
 package com.orderflow.product.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,24 +27,26 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public ProductResponse create(CreateProductRequest req) {
 		Product p = Product.builder().name(req.name()).description(req.description()).price(req.price())
-				.currency(req.currency()).imageUrl(req.imageUrl()).build();
+				.currency(req.currency()).imageUrl(req.imageUrl()).category(req.category()).build();
 
 		productRepository.save(p);
 		return ProductResponse.from(p);
 	}
 
+	@Override
 	@Transactional(readOnly = true)
-	public ProductResponse findById(String id) {
+	public ProductResponse findById(UUID id) {
 		return productRepository.findById(id).map(ProductResponse::from).orElseThrow();
 	}
 
+	@Override
 	@Transactional(readOnly = true)
-	public List<ProductResponse> findByIds(List<String> ids) {
+	public List<ProductResponse> findByIds(List<UUID> ids) {
 		return productRepository.findByIdIn(ids).stream().map(ProductResponse::from).toList();
 	}
 
 	@Transactional
-	public ProductResponse update(String id, UpdateProductRequest req) {
+	public ProductResponse update(UUID id, UpdateProductRequest req) {
 		Product product = productRepository.findById(id).orElseThrow();
 
 		productRepository.save(product);
@@ -51,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Transactional
-	public void delete(String id) {
+	public void delete(UUID id) {
 		if (!productRepository.existsById(id)) {
 
 		}
