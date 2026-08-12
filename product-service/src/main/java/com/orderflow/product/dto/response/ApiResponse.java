@@ -63,7 +63,6 @@ public class ApiResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FieldError {
         private String field;      
-        private String code;       
         private String message;    
     }
 }

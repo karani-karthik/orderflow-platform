@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: product-service
+  
+  messages:
+    basename: lang/messages
 
 # DATASOURCE
   datasource:
