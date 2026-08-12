@@ -14,4 +14,6 @@ public interface ProductService {
 
 	List<ProductResponse> findByIds(List<UUID> ids);
 
+	void delete(UUID id);
+
 }
