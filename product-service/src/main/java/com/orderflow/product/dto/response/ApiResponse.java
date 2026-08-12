@@ -5,7 +5,6 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.orderflow.product.il8n.MessageHelper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +17,7 @@ import lombok.NoArgsConstructor;
 public class ApiResponse<T> {
 	
     private boolean success;
-    
-    private String code;
-    
+        
     private String message;
     
     private T data;
@@ -33,30 +30,27 @@ public class ApiResponse<T> {
     
     private String traceId;
     
-    public static <T> ApiResponse<T> ok(String code, String messageKey, T data) {
+    public static <T> ApiResponse<T> ok(String message, T data) {
         return ApiResponse.<T>builder()
                 .success(true)
-                .code(code)
-                .message(MessageHelper.getMessage(messageKey))
+                .message(message)
                 .data(data)
                 .timestamp(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
     }
     
-    public static <T> ApiResponse<T> error(String code, String messageKey) {
+    public static <T> ApiResponse<T> error(String message) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .code(code)
-                .message(MessageHelper.getMessage(messageKey))
+                .message(message)
                 .timestamp(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
     }
     
-    public static <T> ApiResponse<T> error(String code, String messageKey, List<FieldError> errors) {
+    public static <T> ApiResponse<T> error(String message, List<FieldError> errors) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .code(code)
-                .message(MessageHelper.getMessage(messageKey))
+                .message(message)
                 .errors(errors)
                 .timestamp(LocalDateTime.now(ZoneOffset.UTC))
                 .build();

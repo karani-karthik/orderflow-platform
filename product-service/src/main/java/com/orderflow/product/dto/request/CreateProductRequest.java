@@ -9,17 +9,26 @@ import jakarta.validation.constraints.Size;
 
 public record CreateProductRequest(
 
-		@NotBlank @Size(max = 200) String name,
+		@NotBlank(message = "{product.name.notblank}") 
+		@Size(max = 200, message = "{product.name.size}") 
+		String name,
 
 		String description,
 
-		@NotNull @DecimalMin(value = "0.0", inclusive = false) BigDecimal price,
+		@NotNull(message = "{product.price.notnull}")
+		@DecimalMin(value = "0.0", inclusive = false, message = "{product.price.decimalmin}")
+		BigDecimal price,
 
-		@NotBlank @Size(min = 3, max = 3) String currency,
+		@NotBlank(message = "{product.currency.notblank}")
+		@Size(min = 3, max = 3, message = "{product.currency.size}") 
+		String currency,
 
-		@NotBlank @Size(max = 64) String category,
+		@NotBlank(message = "{product.category.notblank}")
+		@Size(max = 64, message = "{product.category.size}") 
+		String category,
 
-		@Size(max = 500) String imageUrl
+		@Size(max = 500, message = "{product.imageUrl.size}") 
+		String imageUrl
 
 ) {
 }
